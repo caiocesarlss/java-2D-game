@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class Player extends Entity {
 		this.keyHandler = keyHandler;
 		screenX = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
 		screenY = gamePanel.screenHeight/2 - (gamePanel.tileSize/2);
+		solidArea = new Rectangle(8, 16, gamePanel.tileSize - 16, gamePanel.tileSize - 16);
 		setDefaultValues();
 		loadPlayerImage();
 	}
@@ -51,19 +53,37 @@ public class Player extends Entity {
 		if (isAnyKeyPressed()) {
 			if (keyHandler.upPressed) {
 				direction = "UP";
-				worldY -= speed;
 			}
 			else if (keyHandler.downPressed) {
 				direction = "DOWN";
-				worldY += speed;
 			}
 			else if (keyHandler.leftPressed) {
 				direction = "LEFT";
-				worldX -= speed;
 			}
 			else if (keyHandler.rightPressed) {
 				direction = "RIGHT";
-				worldX += speed;
+			}
+			
+			collisionOn = false;
+			gamePanel.collisionHandler.checkTile(this);
+			
+			if (collisionOn == false) {
+				switch (direction) {
+				case "UP":
+					worldY -= speed;
+					break;
+				case "DOWN":
+					worldY += speed;
+					break;
+				case "LEFT":
+					worldX -= speed;
+					break;
+				case "RIGHT":
+					worldX += speed;
+					break;
+				default:
+					break;
+				}
 			}
 			
 			spriteCounter++;
@@ -114,7 +134,7 @@ public class Player extends Entity {
 			break;
 		}
 		
-		g2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+		g2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null); 
 	}
 	
 	public boolean isAnyKeyPressed() {
