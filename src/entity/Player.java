@@ -15,6 +15,7 @@ public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int screenX;
 	public final int screenY;
+	int keyCount = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
@@ -22,6 +23,8 @@ public class Player extends Entity {
 		screenX = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
 		screenY = gamePanel.screenHeight/2 - (gamePanel.tileSize/2);
 		solidArea = new Rectangle(8, 16, gamePanel.tileSize - 16, gamePanel.tileSize - 16);
+		solidAreaDefaultX = solidArea.x; 
+		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
 		loadPlayerImage();
 	}
@@ -65,7 +68,10 @@ public class Player extends Entity {
 			}
 			
 			collisionOn = false;
-			gamePanel.collisionHandler.checkTile(this);
+			gamePanel.collisionChecker.checkTileCollision(this);
+			
+			int objectIndex = gamePanel.collisionChecker.checkObject(this, true);
+			collectObject(objectIndex);
 			
 			if (collisionOn == false) {
 				switch (direction) {
@@ -97,6 +103,30 @@ public class Player extends Entity {
 				
 				spriteCounter = 0;
 			}
+		}
+	}
+	
+	public void collectObject(int index) {
+		if (index != 999) {
+			String objectName = gamePanel.objectManager.object[index].name;
+			
+			switch (objectName) {
+			case "Key":
+				keyCount++;
+				gamePanel.objectManager.object[index] = null;
+				break;
+			case "Door":
+				if (keyCount > 0) {
+					gamePanel.objectManager.object[index] = null;
+					keyCount--;
+				}
+				break;
+			//case "Chest":
+				// Change the chest sprite to an open chest
+				// Collect item inside the chest
+				//break;
+			}
+			
 		}
 	}
 	
