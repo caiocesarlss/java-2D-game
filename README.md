@@ -3,7 +3,7 @@
 Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [RyiSnow](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq~) sobre como criar um jogo de ação e aventura em 2D com Java, sem utilizar nenhum motor gráfico, framework ou bibliotecas externas. O objetivo é entender os fundamentos de lógica de jogo, estrutura de código e organização de um projeto do zero.
 
 # 📜 Roadmap
-## Parte 1: Jogo de Caça ao Tesouro 💎
+### Parte 1: Jogo de Caça ao Tesouro 💎
 ✅ Implementar um game loop
 
 ✅ Exibir o personagem do jogador
@@ -24,7 +24,7 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 🔲 Completar o jogo
 
-## Parte 2: RPG de Ação ⚔️
+### Parte 2: RPG de Ação ⚔️
 🔲 Adicionar monstros
 
 🔲 Implementar um sistema de batalha
@@ -33,10 +33,6 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 🔲 Adicionar um inventário
 
-🔲 Adicionar um mapa do mundo e sistema de câmera
-
-🔲 Implementar detecção de colisão
-
 🔲 Adicionar eventos
 
-🔲 Completar o jogo
+### 🛠️ Em construção...
