@@ -18,7 +18,7 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Exibir objetos
 
-🔲 Implementar interação com objetos
+✅ Implementar interação com objetos
 
 🔲 Adicionar música e efeitos sonoros
 
