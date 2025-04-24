@@ -16,6 +16,7 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 	int keyCount = 0;
+	int maxSpriteCount = 12;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
@@ -94,7 +95,7 @@ public class Player extends Entity {
 			
 			spriteCounter++;
 			
-			if (spriteCounter > 12) {
+			if (spriteCounter > maxSpriteCount) {
 				if (spriteNum == 1) {
 					spriteNum = 2;
 				} else {
@@ -112,19 +113,27 @@ public class Player extends Entity {
 			
 			switch (objectName) {
 			case "Key":
+				gamePanel.playSoundEffect(1);
 				keyCount++;
 				gamePanel.objectManager.object[index] = null;
 				break;
 			case "Door":
 				if (keyCount > 0) {
+					gamePanel.playSoundEffect(3);
 					gamePanel.objectManager.object[index] = null;
 					keyCount--;
 				}
 				break;
-			//case "Chest":
-				// Change the chest sprite to an open chest
+			case "Chest":
+				// Open chest (Change the chest sprite to an open chest sprite)
 				// Collect item inside the chest
-				//break;
+				break;
+			case "Boots":
+				gamePanel.playSoundEffect(2);
+				speed += 2;
+				maxSpriteCount -= 4;
+				gamePanel.objectManager.object[index] = null;
+				break;
 			}
 			
 		}

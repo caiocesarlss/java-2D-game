@@ -7,9 +7,9 @@ import javax.imageio.ImageIO;
 public class OBJ_Chest extends GameObject {
 	
 	public OBJ_Chest() {
-		name = "Door";
+		name = "Chest";
 		loadObjectImage();
-		
+		collision = true;
 	}
 
 	@Override

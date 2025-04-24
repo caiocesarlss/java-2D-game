@@ -1,7 +1,12 @@
 package main;
 
 import java.awt.Graphics2D;
-import object.*;
+
+import object.GameObject;
+import object.OBJ_Boots;
+import object.OBJ_Chest;
+import object.OBJ_Door;
+import object.OBJ_Key;
 
 public class ObjectManager {
 	GamePanel gamePanel;
@@ -40,6 +45,10 @@ public class ObjectManager {
 		gamePanel.objectManager.object[6] = new OBJ_Chest();
 		gamePanel.objectManager.object[6].worldX = 10 * gamePanel.tileSize;
 		gamePanel.objectManager.object[6].worldY = 7 * gamePanel.tileSize;
+		
+		gamePanel.objectManager.object[7] = new OBJ_Boots();
+		gamePanel.objectManager.object[7].worldX = 37 * gamePanel.tileSize;
+		gamePanel.objectManager.object[7].worldY = 42 * gamePanel.tileSize;
 	}
 	
 	public void draw(Graphics2D g2D, int index) {
