@@ -20,7 +20,9 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Implementar interação com objetos
 
-🔲 Adicionar música e efeitos sonoros
+✅ Adicionar música e efeitos sonoros
+
+🔲 Exibir textos e imagens na tela (UI)
 
 🔲 Completar o jogo
 
