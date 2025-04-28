@@ -4,10 +4,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.GamePanel;
+
 public class OBJ_Boots extends GameObject {
 
-	public OBJ_Boots() {
-		name = "Boots";
+	public OBJ_Boots(GamePanel gamePanel) {
+        super(gamePanel);
+        name = "Boots";
 		loadObjectImage();
 		
 	}

@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	Sound music = new Sound();
 	Sound soundEffect = new Sound();
 	Thread gameThread;
+	public UI ui = new UI(this);
 	public CollisionChecker collisionChecker = new CollisionChecker(this);
 	public ObjectManager objectManager = new ObjectManager(this);
 	public Player player = new Player(this, keyHandler);
@@ -120,17 +121,18 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2D = (Graphics2D) g;
-		tileManager.draw(g2D);
+		Graphics2D g2d = (Graphics2D) g;
+		tileManager.draw(g2d);
 		
 		for (int i = 0; i < objectManager.object.length; i++) {
 			if (objectManager.object[i] != null) {
-				objectManager.draw(g2D, i);
+				objectManager.draw(g2d, i);
 			}
 		}
 		
-		player.draw(g2D);
-		g2D.dispose();
+		player.draw(g2d);
+		ui.draw(g2d);
+		g2d.dispose();
 	}
 	
 	public void playMusic(int index) {

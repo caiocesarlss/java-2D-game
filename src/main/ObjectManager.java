@@ -18,45 +18,45 @@ public class ObjectManager {
 	}
 
 	public void setObject() {
-		gamePanel.objectManager.object[0] = new OBJ_Key();
+		gamePanel.objectManager.object[0] = new OBJ_Key(gamePanel);
 		gamePanel.objectManager.object[0].worldX = 23 * gamePanel.tileSize;
 		gamePanel.objectManager.object[0].worldY = 7 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[1] = new OBJ_Key();
+		gamePanel.objectManager.object[1] = new OBJ_Key(gamePanel);
 		gamePanel.objectManager.object[1].worldX = 23 * gamePanel.tileSize;
 		gamePanel.objectManager.object[1].worldY = 40 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[2] = new OBJ_Key();
+		gamePanel.objectManager.object[2] = new OBJ_Key(gamePanel);
 		gamePanel.objectManager.object[2].worldX = 38 * gamePanel.tileSize;
 		gamePanel.objectManager.object[2].worldY = 8 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[3] = new OBJ_Door();
+		gamePanel.objectManager.object[3] = new OBJ_Door(gamePanel);
 		gamePanel.objectManager.object[3].worldX = 10 * gamePanel.tileSize;
 		gamePanel.objectManager.object[3].worldY = 11 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[4] = new OBJ_Door();
+		gamePanel.objectManager.object[4] = new OBJ_Door(gamePanel);
 		gamePanel.objectManager.object[4].worldX = 8 * gamePanel.tileSize;
 		gamePanel.objectManager.object[4].worldY = 28 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[5] = new OBJ_Door();
+		gamePanel.objectManager.object[5] = new OBJ_Door(gamePanel);
 		gamePanel.objectManager.object[5].worldX = 12 * gamePanel.tileSize;
 		gamePanel.objectManager.object[5].worldY = 22 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[6] = new OBJ_Chest();
+		gamePanel.objectManager.object[6] = new OBJ_Chest(gamePanel);
 		gamePanel.objectManager.object[6].worldX = 10 * gamePanel.tileSize;
 		gamePanel.objectManager.object[6].worldY = 7 * gamePanel.tileSize;
 		
-		gamePanel.objectManager.object[7] = new OBJ_Boots();
+		gamePanel.objectManager.object[7] = new OBJ_Boots(gamePanel);
 		gamePanel.objectManager.object[7].worldX = 37 * gamePanel.tileSize;
 		gamePanel.objectManager.object[7].worldY = 42 * gamePanel.tileSize;
 	}
 	
-	public void draw(Graphics2D g2D, int index) {
+	public void draw(Graphics2D g2d, int index) {
 		int screenX = object[index].worldX - gamePanel.player.worldX + gamePanel.player.screenX;
 		int screenY = object[index].worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 		
 		if (isObjectWithinBounds(object[index].worldX, object[index].worldY, gamePanel)) {
-			g2D.drawImage(object[index].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+			g2d.drawImage(object[index].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 		}
 	}
 	

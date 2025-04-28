@@ -82,7 +82,7 @@ public class TileManager {
 		}
 	}
 	
-	public void draw(Graphics2D g2D) {
+	public void draw(Graphics2D g2d) {
 		int worldCol = 0;
 		int worldRow = 0;
 		
@@ -94,7 +94,7 @@ public class TileManager {
 			int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 			
 			if (isTileWithinBounds(worldX, worldY)) {
-				g2D.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+				g2d.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 			}
 			
 			worldCol++;

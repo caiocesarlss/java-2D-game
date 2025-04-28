@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.GamePanel;
+
 public class OBJ_Door extends GameObject {
 
-	public OBJ_Door() {
+	public OBJ_Door(GamePanel gamePanel) {
+		super(gamePanel);
 		name = "Door";
 		loadObjectImage();
 		collision = true;

@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.GamePanel;
+
 public class OBJ_Chest extends GameObject {
 	
-	public OBJ_Chest() {
+	public OBJ_Chest(GamePanel gamePanel) {
+		super(gamePanel);
 		name = "Chest";
 		loadObjectImage();
 		collision = true;

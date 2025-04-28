@@ -15,7 +15,7 @@ public class Player extends Entity {
 	KeyHandler keyHandler;
 	public final int screenX;
 	public final int screenY;
-	int keyCount = 0;
+	public int keyCount = 0;
 	int maxSpriteCount = 12;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
@@ -52,7 +52,56 @@ public class Player extends Entity {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isAnyKeyPressed() {
+		if (keyHandler.upPressed == true || keyHandler.downPressed == true ||
+				keyHandler.leftPressed == true || keyHandler.rightPressed == true) {
+			return true;
+		}
 
+		return false;
+	}
+	
+	public void collectObject(int index) {
+		if (index != 999) {
+			String objectName = gamePanel.objectManager.object[index].name;
+			
+			switch (objectName) {
+			case "Key":
+				gamePanel.playSoundEffect(1);
+				gamePanel.objectManager.object[index] = null;
+				gamePanel.ui.showMessage("You got a key!");
+				keyCount++;
+				break;
+			case "Door":
+				if (keyCount > 0) {
+					gamePanel.playSoundEffect(3);
+					gamePanel.objectManager.object[index] = null;
+					gamePanel.ui.showMessage("You opened the door!");
+					keyCount--;
+					
+				} else {
+					gamePanel.ui.showMessage("You need a key!");
+				}
+				break;
+			case "Boots":
+				gamePanel.playSoundEffect(2);
+				gamePanel.objectManager.object[index] = null;
+				gamePanel.ui.showMessage("Speed up!");
+				speed += 2;
+				maxSpriteCount -= 4;
+				break;
+			case "Chest":
+				gamePanel.ui.gameFinished = true;
+				gamePanel.stopMusic();
+				gamePanel.playSoundEffect(4);
+				break;
+			}
+			
+		}
+	}
+
+	@Override
 	public void update() {
 		if (isAnyKeyPressed()) {
 			if (keyHandler.upPressed) {
@@ -107,38 +156,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void collectObject(int index) {
-		if (index != 999) {
-			String objectName = gamePanel.objectManager.object[index].name;
-			
-			switch (objectName) {
-			case "Key":
-				gamePanel.playSoundEffect(1);
-				keyCount++;
-				gamePanel.objectManager.object[index] = null;
-				break;
-			case "Door":
-				if (keyCount > 0) {
-					gamePanel.playSoundEffect(3);
-					gamePanel.objectManager.object[index] = null;
-					keyCount--;
-				}
-				break;
-			case "Chest":
-				// Open chest (Change the chest sprite to an open chest sprite)
-				// Collect item inside the chest
-				break;
-			case "Boots":
-				gamePanel.playSoundEffect(2);
-				speed += 2;
-				maxSpriteCount -= 4;
-				gamePanel.objectManager.object[index] = null;
-				break;
-			}
-			
-		}
-	}
-	
+	@Override
 	public void draw(Graphics2D g2D) {
 		BufferedImage image = null;
 		
@@ -174,14 +192,5 @@ public class Player extends Entity {
 		}
 		
 		g2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null); 
-	}
-	
-	public boolean isAnyKeyPressed() {
-		if (keyHandler.upPressed == true || keyHandler.downPressed == true ||
-				keyHandler.leftPressed == true || keyHandler.rightPressed == true) {
-			return true;
-		}
-
-		return false;
 	}
 }
