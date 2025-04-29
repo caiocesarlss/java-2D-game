@@ -22,9 +22,9 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Adicionar música e efeitos sonoros
 
-🔲 Exibir textos e imagens na tela (UI)
+✅ Exibir textos e imagens na tela (UI)
 
-🔲 Completar o jogo
+✅ Completar o jogo 🎉
 
 ### Parte 2: RPG de Ação ⚔️
 🔲 Adicionar monstros
