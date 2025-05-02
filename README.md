@@ -26,6 +26,10 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Completar o jogo 🎉
 
+🔲 Extra: Adicionar funcionalidades de debug
+
+🔲 Extra: Criar um arquivo JAR do jogo
+
 ### Parte 2: RPG de Ação ⚔️
 🔲 Adicionar monstros
 
