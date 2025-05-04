@@ -26,7 +26,7 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Completar o jogo 🎉
 
-🔲 Extra: Adicionar funcionalidades de debug
+✅ Extra: Adicionar funcionalidades de depuração
 
 🔲 Extra: Criar um arquivo JAR do jogo
 
