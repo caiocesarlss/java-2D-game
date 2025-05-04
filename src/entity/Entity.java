@@ -3,6 +3,9 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public abstract class Entity {
 	public int worldX, worldY;
@@ -17,4 +20,14 @@ public abstract class Entity {
 	
 	public abstract void update();
     public abstract void draw(Graphics2D g2d);
+    
+    public BufferedImage loadImage(String path) {
+		try {
+			return ImageIO.read(getClass().getResourceAsStream(path));
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

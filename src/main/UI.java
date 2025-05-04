@@ -35,54 +35,73 @@ public class UI {
 	    int textLength = (int) g2d.getFontMetrics().getStringBounds(text, g2d).getWidth();
 	    return (gamePanel.screenWidth / 2) - (textLength / 2);
 	}
+	
+	public void drawGameOver(Graphics2D g2d) {
+	    String text;
+	    int x, y;
 
+	    g2d.setFont(arial_40);
+	    g2d.setColor(Color.WHITE);
+
+	    text = "You found the Treasure!";
+	    x = centerText(text, g2d);
+	    y = (gamePanel.screenHeight / 2) - (gamePanel.tileSize * 3);
+	    g2d.drawString(text, x, y);
+
+	    text = "Your time is: " + String.format(Locale.US, "%.2f", playTime) + "!";
+	    x = centerText(text, g2d);
+	    y = (gamePanel.screenHeight / 2) + (gamePanel.tileSize * 4);
+	    g2d.drawString(text, x, y);
+
+	    g2d.setFont(arial_80B);
+	    g2d.setColor(Color.YELLOW);
+	    text = "Congratulations!";
+	    x = centerText(text, g2d);
+	    y = (gamePanel.screenHeight / 2) + (gamePanel.tileSize * 2);
+	    g2d.drawString(text, x, y);
+
+	    gamePanel.gameThread = null;
+	}
+	
+	public void drawHUD(Graphics2D g2d) {
+	    g2d.drawImage(keyImage, gamePanel.tileSize / 2, gamePanel.tileSize / 2, gamePanel.tileSize, gamePanel.tileSize, null);
+	    g2d.drawString("x " + gamePanel.player.keyCount, 74, 65);
+	    playTime += 1.0 / 60;
+	    g2d.drawString("Time: " + String.format(Locale.US, "%.2f", playTime), gamePanel.tileSize * 11, 65);
+	}
+	
+	public void drawMessage(Graphics2D g2d) {
+	    if (messageOn) {
+	        g2d.setFont(g2d.getFont().deriveFont(30F));
+	        g2d.drawString(message, gamePanel.tileSize / 2, gamePanel.tileSize * 5);
+	        messageCounter++;
+
+	        if (messageCounter > 120) {
+	            messageCounter = 0;
+	            messageOn = false;
+	        }
+	    }
+	}
+
+	public void drawFPS(Graphics2D g2d) {
+	    if (gamePanel.keyHandler.showFPS == true) {
+	        g2d.setFont(g2d.getFont().deriveFont(Font.PLAIN, 20F));
+	        g2d.setColor(Color.YELLOW);
+	        g2d.drawString("FPS: " + gamePanel.getCurrentFPS(), 10, gamePanel.screenHeight - 10);
+	    }
+	}
+	
 	public void draw(Graphics2D g2d) {
 		g2d.setFont(arial_40);
 		g2d.setColor(Color.WHITE);
 		
 		if (gameFinished) {
-			String text;
-			int x;
-			int y;
-			
-			text = "You found the Treasure!";
-			x = centerText(text, g2d);
-			y = (gamePanel.screenHeight/2) - (gamePanel.tileSize*3);
-			g2d.drawString(text, x, y);
-			
-			text = "Your time is: " + String.format(Locale.US, "%.2f", playTime) + "!";
-			x = centerText(text, g2d);
-			y = (gamePanel.screenHeight/2) + (gamePanel.tileSize*4);
-			g2d.drawString(text, x, y);
-			
-			g2d.setFont(arial_80B);
-			g2d.setColor(Color.YELLOW);
-			text = "Congratulations!";
-			x = centerText(text, g2d);
-			y = (gamePanel.screenHeight/2) + (gamePanel.tileSize*2);
-			g2d.drawString(text, x, y);
-			
-			gamePanel.gameThread = null;
+			drawGameOver(g2d);
 			
 		} else {
-			g2d.drawImage(keyImage, gamePanel.tileSize/2, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-			g2d.drawString("x " + gamePanel.player.keyCount, 74, 65);
-			
-			playTime += 1.0/60;
-			g2d.drawString("Time: " + String.format(Locale.US, "%.2f", playTime), gamePanel.tileSize*11, 65);
-			
-			if (messageOn) {
-				g2d.setFont(g2d.getFont().deriveFont(30F));
-				g2d.drawString(message, gamePanel.tileSize/2, gamePanel.tileSize*5);
-				
-				messageCounter++;
-				
-				if (messageCounter > 120) {
-					messageCounter = 0;
-					messageOn = false;
-				}
-			}
-			
+			drawHUD(g2d);
+			drawMessage(g2d);
+			drawFPS(g2d);
 		}
 	}
 }

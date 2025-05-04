@@ -24,11 +24,12 @@ public class GamePanel extends JPanel implements Runnable {
 	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
-	//public final int worldWidth = tileSize * maxWorldCol;
-	//public final int worldHeight = tileSize * maxWorldRow;
 	
 	// FRAMES PER SECOND
 	int FPS = 60;
+	long timer = 0;
+	int frameCount = 0;
+	int currentFPS = 0;
 	
 	TileManager tileManager = new TileManager(this);
 	KeyHandler keyHandler = new KeyHandler();
@@ -56,6 +57,25 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
+	}
+	
+	public void trackFPS(long elapsedTime) {
+		timer += elapsedTime;
+
+		if (timer >= 1_000_000_000) {
+			currentFPS = frameCount;
+			//printFPS(frameCount);
+			frameCount = 0;
+			timer = 0;
+		}
+	}
+
+	public void printFPS(int fps) {
+		System.out.println("FPS: " + fps);
+	}
+	
+	public int getCurrentFPS() {
+		return currentFPS;
 	}
 	
 	@Override
@@ -86,52 +106,59 @@ public class GamePanel extends JPanel implements Runnable {
 //	}
 
 	public void run() {
-		double drawInterval = 1000000000/FPS;
+		double drawInterval = 1_000_000_000/FPS;
 		double delta = 0;
 		long lastTime = System.nanoTime();
 		long currentTime;
-		//long timer = 0;
-		//int drawCount = 0;
+		long elapsedTime;
 		
 		while (gameThread != null) {
 			currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / drawInterval;
-			//timer += (currentTime - lastTime);
+			elapsedTime = currentTime - lastTime;
+			delta += elapsedTime / drawInterval;
 			lastTime = currentTime;
+			trackFPS(elapsedTime);
 			
 			if (delta >= 1) {
 				update();
 				repaint();
 				delta--;
-				//drawCount++;
+				frameCount++;
 			}
-			
-//			if (timer >= 1000000000) {
-//				System.out.println("FPS: " + drawCount);
-//				drawCount = 0;
-//				timer = 0;
-//			}
 		}
-		
 	}
 	
 	public void update() {
 		player.update();
 	}
 	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
+	public void drawTiles(Graphics2D g2d) {
 		tileManager.draw(g2d);
-		
+	}
+	
+	public void drawObjects(Graphics2D g2d) {
 		for (int i = 0; i < objectManager.object.length; i++) {
 			if (objectManager.object[i] != null) {
 				objectManager.draw(g2d, i);
 			}
 		}
-		
+	}
+	
+	public void drawPlayer(Graphics2D g2d) {
 		player.draw(g2d);
+	}
+	
+	public void drawUI(Graphics2D g2d) {
 		ui.draw(g2d);
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
+		drawTiles(g2d);
+		drawObjects(g2d);
+		drawPlayer(g2d);
+		drawUI(g2d);
 		g2d.dispose();
 	}
 	

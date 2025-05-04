@@ -1,11 +1,9 @@
 package entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -17,7 +15,8 @@ public class Player extends Entity {
 	public final int screenY;
 	public int keyCount = 0;
 	int maxSpriteCount = 12;
-	
+	int standCounter = 0;
+
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
 		this.keyHandler = keyHandler;
@@ -29,43 +28,96 @@ public class Player extends Entity {
 		setDefaultValues();
 		loadPlayerImage();
 	}
-	
+
 	public void setDefaultValues() {
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
 		speed = 4;
 		direction = "DOWN";
 	}
-	
-	public void loadPlayerImage() {
-		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public boolean isAnyKeyPressed() {
-		if (keyHandler.upPressed == true || keyHandler.downPressed == true ||
-				keyHandler.leftPressed == true || keyHandler.rightPressed == true) {
-			return true;
-		}
 
-		return false;
+	public void loadPlayerImage() {
+		up1 = loadImage("/player/boy_up_1.png");
+	    up2 = loadImage("/player/boy_up_2.png");
+	    down1 = loadImage("/player/boy_down_1.png");
+	    down2 = loadImage("/player/boy_down_2.png");
+	    left1 = loadImage("/player/boy_left_1.png");
+	    left2 = loadImage("/player/boy_left_2.png");
+	    right1 = loadImage("/player/boy_right_1.png");
+	    right2 = loadImage("/player/boy_right_2.png");
 	}
-	
+
+	public boolean isAnyKeyPressed() {
+		return keyHandler.upPressed || keyHandler.downPressed ||
+				keyHandler.leftPressed || keyHandler.rightPressed;
+	}
+
+	private void updateDirection() {
+		if (keyHandler.upPressed) {
+			direction = "UP";
+		} else if (keyHandler.downPressed) {
+			direction = "DOWN";
+		} else if (keyHandler.leftPressed) {
+			direction = "LEFT";
+		} else if (keyHandler.rightPressed) {
+			direction = "RIGHT";
+		}
+	}
+
+	private void handleCollision() {
+		collisionOn = false;
+		gamePanel.collisionChecker.checkTileCollision(this);
+
+		int objectIndex = gamePanel.collisionChecker.checkObjectCollision(this, true);
+		collectObject(objectIndex);
+	}
+
+	private void moveIfNoCollision() {
+		if (!collisionOn) {
+			switch (direction) {
+			case "UP":
+				worldY -= speed;
+				break;
+			case "DOWN":
+				worldY += speed;
+				break;
+			case "LEFT":
+				worldX -= speed;
+				break;
+			case "RIGHT":
+				worldX += speed;
+				break;
+			}
+		}
+	}
+
+	private void updateAnimation() {
+		spriteCounter++;
+
+		if (spriteCounter > maxSpriteCount) {
+			if (spriteNum == 1) {
+				spriteNum = 2;
+			} else {
+				spriteNum = 1;
+			}
+
+			spriteCounter = 0;
+		}
+	}
+
+	private void handleStandingAnimation() {
+		standCounter++;
+
+		if (standCounter == 15) {
+			spriteNum = 1;
+			standCounter = 0;
+		}
+	}
+
 	public void collectObject(int index) {
 		if (index != 999) {
 			String objectName = gamePanel.objectManager.object[index].name;
-			
+
 			switch (objectName) {
 			case "Key":
 				gamePanel.playSoundEffect(1);
@@ -79,7 +131,7 @@ public class Player extends Entity {
 					gamePanel.objectManager.object[index] = null;
 					gamePanel.ui.showMessage("You opened the door!");
 					keyCount--;
-					
+
 				} else {
 					gamePanel.ui.showMessage("You need a key!");
 				}
@@ -97,70 +149,26 @@ public class Player extends Entity {
 				gamePanel.playSoundEffect(4);
 				break;
 			}
-			
+
 		}
 	}
 
 	@Override
 	public void update() {
 		if (isAnyKeyPressed()) {
-			if (keyHandler.upPressed) {
-				direction = "UP";
-			}
-			else if (keyHandler.downPressed) {
-				direction = "DOWN";
-			}
-			else if (keyHandler.leftPressed) {
-				direction = "LEFT";
-			}
-			else if (keyHandler.rightPressed) {
-				direction = "RIGHT";
-			}
-			
-			collisionOn = false;
-			gamePanel.collisionChecker.checkTileCollision(this);
-			
-			int objectIndex = gamePanel.collisionChecker.checkObject(this, true);
-			collectObject(objectIndex);
-			
-			if (collisionOn == false) {
-				switch (direction) {
-				case "UP":
-					worldY -= speed;
-					break;
-				case "DOWN":
-					worldY += speed;
-					break;
-				case "LEFT":
-					worldX -= speed;
-					break;
-				case "RIGHT":
-					worldX += speed;
-					break;
-				default:
-					break;
-				}
-			}
-			
-			spriteCounter++;
-			
-			if (spriteCounter > maxSpriteCount) {
-				if (spriteNum == 1) {
-					spriteNum = 2;
-				} else {
-					spriteNum = 1;
-				}
-				
-				spriteCounter = 0;
-			}
+			updateDirection();
+			handleCollision();
+			moveIfNoCollision();
+			updateAnimation();
+		} else {
+			handleStandingAnimation();
 		}
 	}
-	
-	@Override
-	public void draw(Graphics2D g2D) {
+
+	public BufferedImage getCurrentSprite() {
 		BufferedImage image = null;
-		
-		switch(direction) {
+
+		switch (direction) {
 		case "UP":
 			if (spriteNum == 1) {
 				image = up1;
@@ -189,8 +197,26 @@ public class Player extends Entity {
 				image = right2;
 			}
 			break;
+		default:
+			image = down1;
+			break;
 		}
-		
-		g2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null); 
+
+		return image;
+	}
+	
+	public void drawHitbox(Graphics2D g2d) {
+		if (keyHandler.showHitbox) {
+			g2d.setColor(new Color(255, 0, 0, 128));
+			g2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+			g2d.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+		}
+	}
+
+	@Override
+	public void draw(Graphics2D g2d) {
+		BufferedImage image = getCurrentSprite();
+		g2d.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+		drawHitbox(g2d);
 	}
 }
