@@ -4,7 +4,7 @@ import entity.Entity;
 
 public class CollisionChecker {
 	GamePanel gamePanel;
-	public static final int NO_COLLISION = -1;
+	public static final int NO_COLLISION = 999;
 
 	public CollisionChecker(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -56,6 +56,8 @@ public class CollisionChecker {
 	}
 
 	public int checkObjectCollision(Entity entity, boolean interacts) {
+		int index = NO_COLLISION;
+		
 		for (int i = 0; i < gamePanel.objectManager.object.length; i++) {
 			if (gamePanel.objectManager.object[i] != null) {
 				entity.solidArea.x += entity.worldX;
@@ -84,7 +86,7 @@ public class CollisionChecker {
 					}
 					
 					if (interacts == true) {
-						return i;
+						index = i;
 					}
 				}
 				
@@ -96,6 +98,6 @@ public class CollisionChecker {
 			
 		}
 
-		return NO_COLLISION;
+		return index;
 	}
 }
