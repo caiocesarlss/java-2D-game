@@ -28,7 +28,7 @@ Este é um projeto de aprendizado baseado em um tutorial do YouTube do canal [Ry
 
 ✅ Extra: Adicionar funcionalidades de depuração
 
-🔲 Extra: Criar um arquivo JAR do jogo
+✅ Extra: Criar um arquivo JAR do jogo
 
 ### Parte 2: RPG de Ação ⚔️
 🔲 Adicionar monstros
